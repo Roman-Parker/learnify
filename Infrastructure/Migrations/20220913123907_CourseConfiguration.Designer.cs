@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    [Migration("20220913105948_CourseProperties")]
-    partial class CourseProperties
+    [Migration("20220913123907_CourseConfiguration")]
+    partial class CourseConfiguration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -29,7 +29,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Category");
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("Entity.Course", b =>
@@ -42,36 +42,44 @@ namespace Infrastructure.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Image")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Instructor")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Language")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("LastUpdated")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Level")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<float>("Price")
                         .HasColumnType("REAL");
 
                     b.Property<decimal>("Rating")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("decimal(18,1)");
 
                     b.Property<int>("Students")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("SubTitle")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(150)
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
