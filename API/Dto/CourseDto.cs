@@ -19,6 +19,7 @@ namespace API.Dto
         public int Students { get; set; }
 
         public string Description { get; set; }
+        
         public float Price { get; set; }
 
         public string Instructor { get; set; }
