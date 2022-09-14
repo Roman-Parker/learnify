@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Entity;
 using Entity.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace Infrastructure
 {
@@ -17,12 +18,17 @@ namespace Infrastructure
 
         public async Task<IReadOnlyList<Category>> GetCategoriesAsync()
         {
-            return await _context.Categories.ToListAsync();
+            return await _context.Categories
+            .Include(c => c.Courses)
+            .ToListAsync();
         }
 
-        public async Task<Category> GetCategoryByIdAsync(int id)
+        public async Task<Category> GetCategoriesByIdAsync(int id)
         {
-           return await _context.Categories.FindAsync(id);
+           return await _context.Categories
+           .Include(c => c.Courses)
+           .FirstOrDefaultAsync(x => x.Id == id);
         }
+        
     }
 }

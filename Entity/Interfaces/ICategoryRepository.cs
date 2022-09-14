@@ -7,9 +7,7 @@ namespace Entity.Interfaces
     {
     Task<IReadOnlyList<Category>> GetCategoriesAsync();
 
-      Task<Category> GetCategoryByIdAsync(int id);
+      Task<Category> GetCategoriesByIdAsync(int id);
 
     }
 }
-
-
