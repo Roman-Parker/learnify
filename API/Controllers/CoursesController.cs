@@ -7,15 +7,14 @@ using Entity;
 using Entity.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
-
 namespace API.Controllers
 {
     public class CoursesController : BaseController
     {
-        private readonly ICourseRepository _repository;
+        private readonly IGenericRepository<Course> _repository;
         private readonly IMapper _mapper;
 
-        public CoursesController(ICourseRepository repository, IMapper mapper)
+        public CoursesController(IGenericRepository<Course> repository, IMapper mapper)
         {
             _mapper = mapper;
             _repository = repository;
@@ -24,9 +23,9 @@ namespace API.Controllers
 
         [HttpGet]
 
-        public async Task<ActionResult<List<CourseDto>>> GetCourses()
+        public async Task<ActionResult<IReadOnlyList<CourseDto>>> GetCourses()
         {
-            var courses = await _repository.GetCoursesAsync();
+            var courses = await _repository.ListAllAsync();
             return Ok(_mapper.Map<IReadOnlyList<Course>, IReadOnlyList<CourseDto>>(courses));
         }
 
@@ -34,10 +33,9 @@ namespace API.Controllers
 
         public async Task<ActionResult<CourseDto>> GetCourse(Guid id)
         {
-            var course = await _repository.GetCourseByIdAsync(id);
+            var course = await _repository.GetByIdAsync(id);
 
             return _mapper.Map<Course, CourseDto>(course);
         }
-
     }
 }
