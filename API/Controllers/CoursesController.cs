@@ -27,7 +27,7 @@ namespace API.Controllers
 
         [HttpGet]
 
-        public async Task<ActionResult<IReadOnlyList<CourseDto>>> GetCourses()
+        public async Task<ActionResult<IReadOnlyList<CourseDto>>> GetCourses(string sort)
         {
             var spec = new CoursesWithCategoriesSpecification();
 

@@ -9,6 +9,9 @@ using Microsoft.OpenApi.Models;
 using Entity.Interfaces;
 using API.Helpers;
 using API.Middleware;
+using Microsoft.AspNetCore.Mvc;
+using System.Linq;
+using API.ErrorResponse;
 
 namespace API
 {
@@ -45,6 +48,24 @@ namespace API
                    .WithOrigins("http://localhost:3000");
                });
            });
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.InvalidModelStateResponseFactory = actionContext =>
+                {
+                    var errors = actionContext.ModelState
+                        .Where(e => e.Value.Errors.Count > 0)
+                        .SelectMany(x => x.Value.Errors)
+                        .Select(x => x.ErrorMessage).ToArray();
+
+                    var errorResponse = new ApiValidationErrorResponse
+                    {
+                        Errors = errors
+                    };
+
+                    return new BadRequestObjectResult(errorResponse);
+                };
+                //
+            });
         }
 
 
