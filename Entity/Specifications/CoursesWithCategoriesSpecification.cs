@@ -4,10 +4,11 @@ namespace Entity.Specifications
 {
     public class CoursesWithCategoriesSpecification : BaseSpecification<Course>
     {
-        public CoursesWithCategoriesSpecification(string sort)
+        public CoursesWithCategoriesSpecification(string sort, int? categoryId) : base( x =>
+            !categoryId.HasValue || x.CategoryId == categoryId
+        )
         {
             IncludeMethod(c => c.Category);
-            SortMethod(c => c.Title);
 
             if(!string.IsNullOrEmpty(sort))
             {
