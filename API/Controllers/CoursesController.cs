@@ -27,9 +27,9 @@ namespace API.Controllers
 
         [HttpGet]
 
-        public async Task<ActionResult<IReadOnlyList<CourseDto>>> GetCourses(string sort, int? categoryId)
+        public async Task<ActionResult<IReadOnlyList<CourseDto>>> GetCourses([FromQuery] CourseParams courseParams)
         {
-            var spec = new CoursesWithCategoriesSpecification(sort, categoryId);
+            var spec = new CoursesWithCategoriesSpecification(courseParams);
 
             var courses = await _repository.ListWithSpec(spec);
             return Ok(_mapper.Map<IReadOnlyList<Course>, IReadOnlyList<CourseDto>>(courses));

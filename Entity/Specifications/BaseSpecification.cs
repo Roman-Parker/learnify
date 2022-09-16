@@ -23,6 +23,12 @@ namespace Entity.Specifications
 
         public Expression<Func<T, object>> SortByDescending {get; private set;}
 
+        public int Take {get; private set;}
+
+        public int Skip {get; private set;}
+
+        public bool IsPaging {get; private set;}
+
         protected void IncludeMethod(Expression<Func<T, object>> expression)
         {
             Include.Add(expression);
@@ -37,7 +43,12 @@ namespace Entity.Specifications
         {
             SortByDescending = sortDescendingExpression;
         }
+
+        protected void ApplyPagination(int skip, int take)
+        {
+            Skip = skip;
+            Take = take;
+            IsPaging = true;
+        }
     }
 }
-
-
