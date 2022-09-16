@@ -35,7 +35,9 @@ namespace API
             services.AddScoped<ICategoryRepository, CategoryRepository>(); 
             services.AddControllers();
             services.AddDbContext<StoreContext>(x =>
-               x.UseSqlite(_config.GetConnectionString("DefaultConnection")));
+               x.UseSqlite(_config.GetConnectionString("DefaultConnection"),
+               x => x.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)
+               ));
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });

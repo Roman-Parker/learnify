@@ -10,6 +10,8 @@ namespace Entity.Specifications
         )
         {
             IncludeMethod(c => c.Category);
+            IncludeMethod(c => c.Requirements);
+            IncludeMethod(c => c.Learnings);
             SortMethod(c => c.Title);
             ApplyPagination(courseParams.PageSize * (courseParams.PageIndex - 1), courseParams.PageSize);
 
@@ -34,6 +36,8 @@ namespace Entity.Specifications
         {
             IncludeMethod(c => c.Requirements);
             IncludeMethod(c => c.Learnings);
+            IncludeMethod(c => c.Category);
+            SortMethod(c => c.Id);
         }
 
     }
