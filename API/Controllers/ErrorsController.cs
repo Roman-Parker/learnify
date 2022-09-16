@@ -1,5 +1,6 @@
 using Infrastructure;
 using Microsoft.AspNetCore.Mvc;
+using API.ErrorResponse;
 
 namespace API.Controllers
 {
@@ -17,7 +18,7 @@ namespace API.Controllers
         {
             var category = _context.Categories.Find(42);
 
-            if (category == null) return NotFound();
+            if (category == null) return NotFound(new ApiResponse(404));
 
             return Ok();
         }
@@ -33,7 +34,7 @@ namespace API.Controllers
           [HttpGet("badrequest")]
         public ActionResult BadRequestMethod()
         {
-            return BadRequest();
+            return BadRequest(new ApiResponse(400));
         }
 
           [HttpGet("badrequest/{id}")]
