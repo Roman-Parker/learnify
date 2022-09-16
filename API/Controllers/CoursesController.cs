@@ -29,7 +29,7 @@ namespace API.Controllers
 
         public async Task<ActionResult<IReadOnlyList<CourseDto>>> GetCourses(string sort)
         {
-            var spec = new CoursesWithCategoriesSpecification();
+            var spec = new CoursesWithCategoriesSpecification(sort);
 
             var courses = await _repository.ListWithSpec(spec);
             return Ok(_mapper.Map<IReadOnlyList<Course>, IReadOnlyList<CourseDto>>(courses));
