@@ -8,11 +8,22 @@ export interface Course {
     description: string;
     language: string;
     category: string;
-    learnings: string[] | [];
-    requirements: string[] | [];
     level: string;
     students: number;  
     subTitle: string;
+    learnings: Learning[] | [];
+    requirements: Requirement[] | [];
+    lastUpdated: Date;
+  }
+
+  export interface Learning {
+    id: number;
+    name: string;
+  }
+
+  export interface Requirement{
+    id: number;
+    name: string; 
   }
   
   
