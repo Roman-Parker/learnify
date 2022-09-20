@@ -6,6 +6,7 @@ import LoginPage from './pages/LoginPage';
 import Navigation from './components/Navigation';
 import "antd/dist/antd.css"
 import Category from './components/Categories';
+import CategoryPage from './pages/CategoryPage'
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
       
       <Routes>
         <Route path="/" element={<Homepage/>} />
+        <Route path="/category/:id" element={<CategoryPage/>} />
         <Route path="/login" element={<LoginPage/>} />
         <Route path="/detail" element={<DetailPage/>} />
       </Routes>
