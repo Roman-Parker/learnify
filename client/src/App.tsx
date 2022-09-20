@@ -5,11 +5,16 @@ import Homepage from './pages/Homepage';
 import LoginPage from './pages/LoginPage';
 import Navigation from './components/Navigation';
 import "antd/dist/antd.css"
+import Category from './components/Categories';
 
 function App() {
   return (
     <>
       <Navigation/>
+      <Routes>
+        <Route path="/" element={<Category/>} />
+      </Routes>
+      
       <Routes>
         <Route path="/" element={<Homepage/>} />
         <Route path="/login" element={<LoginPage/>} />
