@@ -2,7 +2,7 @@ import { Route, Routes} from 'react-router-dom';
 import './sass/main.scss';
 import DetailPage from './pages/DetailPage';
 import Homepage from './pages/Homepage';
-import LoginPage from './pages/LoginPage';
+import LoginPage from './pages/Login';
 import Navigation from './components/Navigation';
 import "antd/dist/antd.css"
 import Category from './components/Categories';
