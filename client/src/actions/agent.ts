@@ -1,13 +1,14 @@
 import axios, { AxiosResponse } from "axios";
-import { Basket } from "../models/basket";
+import { PaginatedCourse } from "../models/paginatedCourse";
 import { Category } from "../models/category";
 import { Course } from "../models/course";
-import { PaginatedCourse } from "../models/paginatedCourse";
+import { Basket } from "../models/basket";
 
 axios.defaults.baseURL = "http://localhost:5000/api";
-axios.defaults.withCredentials = true;
 
 const responseBody = <T>(response: AxiosResponse<T>) => response.data;
+
+axios.defaults.withCredentials = true;
 
 const requests = {
   get: <T>(url: string, params?: URLSearchParams) =>
@@ -18,16 +19,17 @@ const requests = {
   del: <T>(url: string) => axios.delete<T>(url).then(responseBody),
 };
 
+
+
 const Courses = {
   list: (params?: URLSearchParams) =>
-    requests.get<PaginatedCourse>("courses", params),
-  getById: (id: string) => requests.get<Course>(`courses/${id}`),
+    requests.get<PaginatedCourse>("/courses", params),
+  getById: (id: string) => requests.get<Course>(`/courses/${id}`),
 };
 
 const Categories = {
-  list: (params?: URLSearchParams) =>
-    requests.get<Category[]>("categories", params),
-  getCategory: (id: number) => requests.get<Category>(`categories/${id}`),
+  list: () => requests.get<Category[]>("/categories"),
+  getCategory: (id: number) => requests.get<Category>(`/categories/${id}`),
 };
 
 const Baskets = {
