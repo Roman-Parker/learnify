@@ -1,18 +1,17 @@
-import React, { useDebugValue, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { increment, LoginState } from "../redux/loginReducer";
+import { increment } from "../redux/slice/loginSlice";
+import React from "react";
+import { useAppDispatch, useAppSelector } from "../redux/store/configureStore";
 
 const LoginPage = () => {
+  const dispatch = useAppDispatch();
+  const { visits } = useAppSelector((state) => state.login);
 
-    const {visits} = useSelector((state:LoginState) => state)
-
-    const dispatch  = useDispatch();
-
-    
-    return <>
-        <h1>Number of visits: {visits}</h1>;
-        <button onClick={() => dispatch(increment(5))}> Increment</button>
-    </> 
+  return (
+    <>
+      <h1>Number of Visits: {visits}</h1>
+      <button onClick={() => dispatch(increment(5))}>Increment</button>
+    </>
+  );
 };
 
-export default LoginPage; 
+export default LoginPage;
