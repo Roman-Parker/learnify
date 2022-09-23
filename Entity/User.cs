@@ -1,7 +1,9 @@
+using Microsoft.AspNetCore.Identity;
+
 namespace Entity
 {
-    public class User
+    public class User : IdentityUser
     {
-        
+
     }
 }
