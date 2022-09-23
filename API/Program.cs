@@ -6,6 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+using Entity;
 
 namespace API
 {
@@ -19,9 +21,10 @@ namespace API
             var logger = services.GetRequiredService<ILogger<Program>>();
             try
             {
+                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
                 var context = services.GetRequiredService<StoreContext>();
                 await context.Database.MigrateAsync();
-                await StoreContextSeed.SeedAsync(context, logger);
+                await StoreContextSeed.SeedAsync(context, logger, userManager);
             }
             catch(Exception ex)
             {
