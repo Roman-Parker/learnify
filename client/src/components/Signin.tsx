@@ -1,16 +1,23 @@
-import { Button, Card, Form, Input, Typography } from "antd";
-import { Content } from "antd/lib/layout/layout";
-import { ChangeEvent, SyntheticEvent, useState } from "react";
-import agent from "../actions/agent";
-import { Login } from "../models/user";
+import { Button, Card, Form, Input, Typography } from 'antd';
+import { Content } from 'antd/lib/layout/layout';
+import { ChangeEvent, SyntheticEvent, useState } from 'react';
+import agent from '../actions/agent';
+import { Login } from '../models/user';
 
 const { Text, Title } = Typography;
 
-const Signin = () => {
-  const [values, setValues] = useState<Login>({
-      email: "",
-      password: "",
-    })
+interface Props {
+  toggleRegister: () => void;
+}
+
+const Signin = ({ toggleRegister }: Props) => {
+  const [values, setValues] =
+    useState <
+    Login >
+    ({
+      email: '',
+      password: '',
+    });
 
   const { email, password } = values;
 
@@ -23,10 +30,10 @@ const Signin = () => {
     e.preventDefault();
     if (email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/) && password.length >= 6) {
       const response = await agent.Users.login(values);
-      setValues({ ...values, email: "", password: "" });
+      setValues({ ...values, email: '', password: '' });
       console.log(response);
     }
-};
+  };
 
   return (
     <>
@@ -53,7 +60,7 @@ const Signin = () => {
               rules={[
                 {
                   required: true,
-                  message: "Please enter a valid email!",
+                  message: 'Please enter a valid email!',
                   pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
                 },
               ]}
@@ -67,7 +74,7 @@ const Signin = () => {
               rules={[
                 {
                   required: true,
-                  message: "Please enter a valid password!",
+                  message: 'Please enter a valid password!',
                   min: 6,
                 },
               ]}
@@ -85,10 +92,11 @@ const Signin = () => {
             </Form.Item>
           </Form>
         </Content>
-        <div className="log-in-card__toggle">Not a user yet? Register here</div>
+        <div onClick={toggleRegister} className="log-in-card__toggle">
+          Not a user yet? Register here
+        </div>
       </Card>
     </>
-
   );
 };
 
