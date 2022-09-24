@@ -10,9 +10,8 @@ import CategoryPage from './pages/CategoryPage';
 import DescriptionPage from './pages/DescriptionPage';
 import BasketPage from './pages/BasketPage';
 import { useEffect } from 'react';
-import agent from './actions/agent';
 import { useAppDispatch } from './redux/store/configureStore';
-import { setBasket } from './redux/slice/basketSlice';
+import { fetchBasketAsync, setBasket } from './redux/slice/basketSlice';
 import Dashboard from './pages/Dashboard';
 import { getUser } from './redux/slice/userSlice';
 
@@ -26,16 +25,11 @@ function App() {
       document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)')?.pop() ||
       ''
     );
-  }
+  };
 
   useEffect(() => {
-    const clientId = getCookie('clientId');
-    if (clientId) {
-      agent.Baskets.get()
-        .then((basket) => dispatch(setBasket(basket)))
-        .catch((error) => console.log(error));
-    }
-    dispatch(getUser())
+    dispatch(fetchBasketAsync());
+    dispatch(getUser());
   }, [dispatch]);
   
   return (

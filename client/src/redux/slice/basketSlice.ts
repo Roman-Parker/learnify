@@ -1,6 +1,6 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import agent from '../../actions/agent';
-import { Basket } from '../../models/basket';
+import { createAsyncThunk, createSlice, isAnyOf } from "@reduxjs/toolkit";
+import agent from "../../actions/agent";
+import { Basket } from "../../models/basket";
 
 interface BasketState {
   basket: Basket | null | undefined;
@@ -9,67 +9,94 @@ interface BasketState {
 
 const initialState: BasketState = {
   basket: null,
-  status: 'idle',
+  status: "idle",
 };
 
-export const addBasketItemAsync = createAsyncThunk<Basket | undefined, {courseId: string}>(
-    'basket/addBasketItemAsync', 
-    async({courseId}) => {
-        try {
-            return await agent.Baskets.addItem(courseId)
-        } catch (error) {
-            console.log(error)
-        }
-})
+function getCookie(name: string) {
+  return (
+    document.cookie.match("(^|;)\\s*" + name + "\\s*=\\s*([^;]+)")?.pop() || ""
+  );
+}
 
-export const removeBasketItemAsync = createAsyncThunk<void, {courseId: string}>(
-  "basket/removeBasketItemAsync",
-  async ({courseId}) => {
+export const fetchBasketAsync = createAsyncThunk<Basket>(
+  "basket/fetchBasketAsync",
+  async (_, thunkAPI) => {
     try {
-      await agent.Baskets.removeItem(courseId);
-    } catch (error) {
-      console.log(error)
+      return await agent.Baskets.get();
+    } catch (err: any) {
+      return thunkAPI.rejectWithValue({ err: err });
     }
+  },
+  {
+    condition: () => {
+      if (!getCookie("clientId")) return false;
+    },
   }
-)
+);
+
+export const addBasketItemAsync = createAsyncThunk<
+  Basket | undefined,
+  { courseId: string }
+>("basket/addBasketItemAsync", async ({ courseId }, thunkAPI) => {
+  try {
+    return await agent.Baskets.addItem(courseId);
+  } catch (err) {
+    return thunkAPI.rejectWithValue({ err: err });
+  }
+});
+
+export const removeBasketItemAsync = createAsyncThunk<
+  void,
+  { courseId: string }
+>("basket/removeBasketItemAsync", async ({ courseId }, thunkAPI) => {
+  try {
+    await agent.Baskets.removeItem(courseId);
+  } catch (err) {
+    return thunkAPI.rejectWithValue({ err: err });
+  }
+});
 
 export const basketSlice = createSlice({
-  name: 'basket',
+  name: "basket",
   initialState,
   reducers: {
     setBasket: (state, action) => {
       state.basket = action.payload;
     },
-    
   },
   extraReducers: (builder) => {
-    builder.addCase(addBasketItemAsync.pending, (state, action) => {
-        state.status = 'pending'
+    builder.addCase(addBasketItemAsync.pending, (state) => {
+      state.status = "pending";
     });
-    builder.addCase(addBasketItemAsync.fulfilled, (state, action) => {
-        state.basket = action.payload;
-        state.status = 'idle'
-    });
-    builder.addCase(addBasketItemAsync.rejected, (state, action) => {
-      state.status = 'idle'
-  });
-    builder.addCase(removeBasketItemAsync.pending, (state, action) => {
-      state.status = 'pending'
+    builder.addCase(removeBasketItemAsync.pending, (state) => {
+      state.status = "pending";
     });
     builder.addCase(removeBasketItemAsync.fulfilled, (state, action) => {
-      state.status = 'idle'
       const { courseId } = action.meta.arg;
       const itemIndex = state.basket?.items.findIndex(
-        (i) => i.courseId === courseId,
+        (i) => i.courseId === courseId
       );
       if (itemIndex === undefined || itemIndex === -1) return;
       state.basket?.items.splice(itemIndex, 1);
+      state.status = "idle";
     });
-    builder.addCase(removeBasketItemAsync.rejected, (state, action) => {
-      state.status = 'idle';
+    builder.addCase(removeBasketItemAsync.rejected, (state) => {
+      state.status = "idle";
     });
-    
-  }
+    builder.addMatcher(
+      isAnyOf(addBasketItemAsync.fulfilled, fetchBasketAsync.fulfilled),
+      (state, action) => {
+        state.basket = action.payload;
+        state.status = "idle";
+      }
+    );
+    builder.addMatcher(
+      isAnyOf(addBasketItemAsync.rejected, fetchBasketAsync.rejected),
+      (state) => {
+        state.status = "idle";
+      }
+    );
+  },
 });
 
 export const { setBasket } = basketSlice.actions;
