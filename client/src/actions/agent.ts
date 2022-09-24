@@ -3,12 +3,18 @@ import { PaginatedCourse } from "../models/paginatedCourse";
 import { Category } from "../models/category";
 import { Course } from "../models/course";
 import { Basket } from "../models/basket";
+import { Login, Register } from "../models/user";
 
 axios.defaults.baseURL = "http://localhost:5000/api";
 
 const responseBody = <T>(response: AxiosResponse<T>) => response.data;
 
 axios.defaults.withCredentials = true;
+
+const Users = {
+  login: (values: Login) => requests.post("users/login", values),
+  register: (values: Register) => requests.post("users/register", values),
+}
 
 const requests = {
   get: <T>(url: string, params?: URLSearchParams) =>
@@ -43,6 +49,7 @@ const agent = {
   Courses,
   Categories,
   Baskets,
+  Users,
 };
 
 export default agent;
