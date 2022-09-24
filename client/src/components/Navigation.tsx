@@ -1,7 +1,7 @@
 import React, { ChangeEvent, SyntheticEvent, useState } from "react";
 import * as FaIcons from "react-icons/fa";
 import { useDispatch } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import Logo from "../assets/logo.png";
 import { removeBasket } from "../redux/slice/basketSlice";
 import { setCourseParams } from "../redux/slice/courseSlice";
@@ -17,12 +17,12 @@ const Navigation = () => {
   const showSidebar = () => setSidebar(!sidebar);
   const dispatch = useDispatch();
 
-  const history = useNavigate();
+  const history = useHistory();
 
   const signout = () => {
     dispatch(signOut());
     dispatch(removeBasket())
-    history("/");
+    history.push("/");
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {

@@ -1,4 +1,4 @@
-import { Route, Routes} from 'react-router-dom';
+import { Route, Switch} from 'react-router-dom';
 import './sass/main.scss';
 import DetailPage from './pages/DetailPage';
 import Homepage from './pages/Homepage';
@@ -14,6 +14,9 @@ import { useAppDispatch } from './redux/store/configureStore';
 import { fetchBasketAsync, setBasket } from './redux/slice/basketSlice';
 import Dashboard from './pages/Dashboard';
 import { getUser } from './redux/slice/userSlice';
+import Login from './pages/Login';
+import Categories from './components/Categories';
+import PrivateRoute from './components/PrivateRoute';
 
 function App() {
 
@@ -34,20 +37,17 @@ function App() {
   
   return (
     <>
-      <Navigation/>
-      <Routes>
-        <Route path="/" element={<Category/>} />
-      </Routes>
-      
-      <Routes>
-        <Route path="/" element={<Homepage/>} />
-        <Route path="/category/:id" element={<CategoryPage/>} />
-        <Route path="/basket" element={<BasketPage/>} />
-        <Route path="/course/:id" element={<DescriptionPage/>} />
-        <Route path="/login" element={<LoginPage/>} />
-        <Route path="/detail" element={<DetailPage/>} />
-        <Route path="/profile" element={<Dashboard/>} />
-      </Routes>
+      <Navigation />
+      <Route exact path="/" component={Categories} />
+      <Switch>
+        <Route exact path="/" component={Homepage} />
+        <Route exact path="/course/:id" component={DescriptionPage} />
+        <Route exact path="/basket" component={BasketPage} />
+        <Route exact path="/category/:id" component={CategoryPage} />
+        <Route exact path="/login" component={Login} />
+        <Route exact path="/detail" component={DetailPage} />
+        <PrivateRoute exact path="/profile" component={Dashboard} />
+      </Switch>
     </>
   );
 }

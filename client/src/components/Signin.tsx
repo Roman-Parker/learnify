@@ -2,7 +2,7 @@ import { Button, Card, Form, Input, notification, Typography } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import { ChangeEvent, SyntheticEvent, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { Login } from "../models/user";
 import { signInUser } from "../redux/slice/userSlice";
 import { AppDispatch } from "../redux/store/configureStore";
@@ -30,7 +30,7 @@ const Signin = ({ toggleRegister }: Props) => {
     form.resetFields();
   };
 
-  const history = useNavigate();
+  const history = useHistory();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -42,7 +42,7 @@ const Signin = ({ toggleRegister }: Props) => {
     try {
       if (email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/) && password.length >= 6) {
         await dispatch(signInUser(values));
-        history("/profile")
+        history.push("/profile")
       }
       resetForm();
     } catch (err: any) {
