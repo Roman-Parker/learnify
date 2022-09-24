@@ -1,10 +1,12 @@
 import React, { ChangeEvent, SyntheticEvent, useState } from "react";
 import * as FaIcons from "react-icons/fa";
 import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Logo from "../assets/logo.png";
 import { setCourseParams } from "../redux/slice/courseSlice";
+import { signOut } from "../redux/slice/userSlice";
 import { useAppSelector } from "../redux/store/configureStore";
+import UserMenu from "./UserMenu";
 
 const Navigation = () => {
   const [sidebar, setSidebar] = useState(false);
@@ -14,9 +16,18 @@ const Navigation = () => {
   const showSidebar = () => setSidebar(!sidebar);
   const dispatch = useDispatch();
 
+  const history = useNavigate();
+
+  const signout = () => {
+    dispatch(signOut());
+    history("/");
+  };
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
   };
+
+  const { user } = useAppSelector((state) => state.user);
 
   const onSearch = (e: SyntheticEvent) => {
     e.preventDefault();
@@ -39,9 +50,20 @@ const Navigation = () => {
                 <Link to="/">
                   <li>Home</li>
                 </Link>
-                <Link to="/login">
-                  <li>Login</li>
-                </Link>
+                {user ? (
+                  <>
+                    <Link to="/profile">
+                      <li>Profile</li>
+                    </Link>
+                    <div onClick={signout}>
+                      <li>Logout</li>
+                    </div>
+                  </>
+                ) : (
+                  <Link to="/login">
+                    <li>Login</li>
+                  </Link>
+                )}
               </ul>
             </nav>
           </div>
@@ -51,9 +73,15 @@ const Navigation = () => {
             <Link to="/">
               <li className="nav__left__list__item">Home</li>
             </Link>
-            <Link to="/login">
-              <li className="nav__left__list__item">Login</li>
-            </Link>
+            {user ? (
+              <li className="nav__left__list__item">
+                <UserMenu />
+              </li>
+            ) : (
+              <Link to="/login">
+                <li className="nav__left__list__item">Login</li>
+              </Link>
+            )}
           </ul>
         </div>
         <div className="nav__right">
@@ -80,7 +108,6 @@ const Navigation = () => {
         </div>
       </div>
     </div>
-
   );
 };
 

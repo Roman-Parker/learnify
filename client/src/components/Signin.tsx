@@ -4,6 +4,7 @@ import { ChangeEvent, SyntheticEvent, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Login } from "../models/user";
 import { signInUser } from "../redux/slice/userSlice";
+import { AppDispatch } from "../redux/store/configureStore";
 
 const { Text, Title } = Typography;
 
@@ -17,7 +18,7 @@ const Signin = ({ toggleRegister }: Props) => {
     password: "",
   });
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   const { email, password } = values;
 

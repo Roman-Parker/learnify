@@ -13,6 +13,7 @@ import { useEffect } from 'react';
 import agent from './actions/agent';
 import { useAppDispatch } from './redux/store/configureStore';
 import { setBasket } from './redux/slice/basketSlice';
+import Dashboard from './pages/Dashboard';
 
 function App() {
 
@@ -49,6 +50,7 @@ function App() {
         <Route path="/course/:id" element={<DescriptionPage/>} />
         <Route path="/login" element={<LoginPage/>} />
         <Route path="/detail" element={<DetailPage/>} />
+        <Route path="/profile" element={<Dashboard/>} />
       </Routes>
     </>
   );

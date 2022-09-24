@@ -4,6 +4,7 @@ import { ChangeEvent, SyntheticEvent, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Register } from "../models/user";
 import { registerUser } from "../redux/slice/userSlice";
+import { AppDispatch } from "../redux/store/configureStore";
 
 const { Text, Title } = Typography;
 
@@ -12,7 +13,7 @@ interface Props {
 }
 
 const RegisterComponent = ({ toggleRegister }: Props) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   const [values, setValues] = useState<Register>({
     email: "",
