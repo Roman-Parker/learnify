@@ -1,6 +1,7 @@
 using Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using API.ErrorResponse;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
@@ -13,7 +14,15 @@ namespace API.Controllers
             _context = context;
         }
 
-       [HttpGet("notfound")]
+        [HttpGet("authcheck")]
+        [Authorize]
+
+        public ActionResult<string> CheckAuthorization()
+        {
+            return "You are authorized";
+        }
+
+        [HttpGet("notfound")]
         public ActionResult NotFoundMethod()
         {
             var category = _context.Categories.Find(42);

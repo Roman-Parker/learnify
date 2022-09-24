@@ -19,9 +19,7 @@ namespace Infrastructure.Services
         {
             _userManager = userManager;
             _config = config;
-
         }
-
         public async Task<string> GenerateToken(User user)
         {
             var claims = new List<Claim>

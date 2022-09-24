@@ -14,6 +14,10 @@ using System.Linq;
 using API.ErrorResponse;
 using Entity;
 using Microsoft.AspNetCore.Identity;
+using Infrastructure.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace API
 {
@@ -26,11 +30,12 @@ namespace API
 
         }
 
-
-
         // This method gets called by the runtime. Use this method to add services to the container.
            public void ConfigureServices(IServiceCollection services)
             {
+            services.AddAuthorization();
+            services.AddScoped<TokenService>();
+            services.AddScoped<ICourseRepository, CourseRepository>();
             services.AddIdentityCore<User>(opt =>
             {
                 opt.User.RequireUniqueEmail = true;
@@ -39,7 +44,17 @@ namespace API
             services.AddIdentityCore<User>()
             .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<StoreContext>();
-            services.AddAuthentication();
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(opt => {
+                opt.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JWT:TokenKey"]))
+                };
+            });
             services.AddAuthorization();
 
             services.AddScoped<ICourseRepository, CourseRepository>();
@@ -100,6 +115,7 @@ namespace API
 
             app.UseCors("CorsPolicy");
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
