@@ -33,8 +33,10 @@ namespace API
         // This method gets called by the runtime. Use this method to add services to the container.
            public void ConfigureServices(IServiceCollection services)
             {
+            
             services.AddAuthorization();
             services.AddScoped<TokenService>();
+            services.AddScoped<PaymentService>();
             services.AddScoped<ICourseRepository, CourseRepository>();
             services.AddIdentityCore<User>(opt =>
             {
