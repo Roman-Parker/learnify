@@ -7,7 +7,9 @@ import reportWebVitals from './reportWebVitals';
 import { StoreProvider } from './context/StoreContext';
 import { Provider } from 'react-redux';
 import { store } from './redux/store/configureStore';
+import { axiosIntercepter } from './actions/agent';
 
+axiosIntercepter(store);
 
 ReactDOM.render(
   <Router>

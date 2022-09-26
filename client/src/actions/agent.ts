@@ -4,12 +4,21 @@ import { Category } from "../models/category";
 import { Course } from "../models/course";
 import { Basket } from "../models/basket";
 import { Login, Register, User } from "../models/user";
+import { Store } from "redux";
 
 axios.defaults.baseURL = "http://localhost:5000/api";
 
 const responseBody = <T>(response: AxiosResponse<T>) => response.data;
 
 axios.defaults.withCredentials = true;
+
+export const axiosIntercepter = (store: Store) => {
+  axios.interceptors.request.use((config) => {
+    const token = store.getState().user.user?.token;
+    if(token) config.headers!.Authorization = `Bearer ${token}`;
+    return config;
+  })
+}
 
 const Users = {
   login: (values: Login) => requests.post<User>("users/login", values),
@@ -45,11 +54,16 @@ const Baskets = {
   removeItem: (courseId: string) => requests.del(`basket?courseId=${courseId}`),
 };
 
+const Payments = {
+  paymentIntent:() => requests.post<Basket>("payments", {}),
+};
+
 const agent = {
   Courses,
   Categories,
   Baskets,
   Users,
+  Payments,
 };
 
 export default agent;
