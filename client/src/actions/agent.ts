@@ -23,7 +23,9 @@ export const axiosIntercepter = (store: Store) => {
 const Users = {
   login: (values: Login) => requests.post<User>("users/login", values),
   register: (values: Register) => requests.post<User>("users/register", values),
-}
+  addCourse: () => requests.post("users/purchaseCourses", {}),
+};
+
 
 const requests = {
   get: <T>(url: string, params?: URLSearchParams) =>
