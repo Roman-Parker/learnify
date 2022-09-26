@@ -48,10 +48,11 @@ const Categories = {
 };
 
 const Baskets = {
-  get: () => requests.get<Basket>("basket"),
+  get: () => requests.get <Basket> ('basket'),
   addItem: (courseId: string) =>
-    requests.post<Basket>(`basket?courseId=${courseId}`, {}),
+    requests.post < Basket > (`basket?courseId=${courseId}`, {}),
   removeItem: (courseId: string) => requests.del(`basket?courseId=${courseId}`),
+  clear: () => requests.del('basket/clear'),
 };
 
 const Payments = {
