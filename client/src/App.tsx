@@ -13,7 +13,7 @@ import { useEffect } from 'react';
 import { useAppDispatch } from './redux/store/configureStore';
 import { fetchBasketAsync } from './redux/slice/basketSlice';
 import Dashboard from './pages/Dashboard';
-import { getUser } from './redux/slice/userSlice';
+import { fetchCurrentUser } from './redux/slice/userSlice';
 import PrivateRoute from './components/PrivateRoute';
 import CheckoutPage from './pages/CheckoutPage';
 
@@ -22,7 +22,7 @@ function App() {
 
   useEffect(() => {
     dispatch(fetchBasketAsync());
-    dispatch(getUser());
+    dispatch(fetchCurrentUser());
   }, [dispatch]);
 
   return (
