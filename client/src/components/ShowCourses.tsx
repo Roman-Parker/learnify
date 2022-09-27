@@ -16,7 +16,9 @@ const ShowCourses = ({ course }: Props) => {
   const { basket } = useAppSelector((state) => state.basket);
   const dispatch = useAppDispatch();
 
-  const checkWidth = (): void => {
+  const {userCourses} = useAppSelector((state) => state.user)
+
+  const checkWidth = (): void => {  
     if (window.innerWidth > 1024) {
       setSpanVal(6);
     } else if (window.innerWidth < 1024 && window.innerWidth > 768) {
@@ -64,21 +66,24 @@ const ShowCourses = ({ course }: Props) => {
           </div>
           <div className="course__bottom">
             <div className="course__bottom__price">{course.price}</div>
-            {basket?.items.find((item) => item.courseId === course.id) !==
-            undefined ? (
-              <Link to="/basket">
-                <div className="course__bottom__cart">Go to Cart</div>
-              </Link>
-            ) : (
-              <div
-                onClick={() => {
-                  dispatch(addBasketItemAsync({courseId: course.id}));
-                }}
-                className="course__bottom__cart"
-              >
-                Add to cart
-              </div>
-            )}
+            {userCourses?.find((item) => item.id === course.id) !==
+              undefined ? (
+                  <div className="course__bottom__cart">Go to Course</div>
+              ) : basket?.items.find((item) => item.courseId === course.id) !==
+                undefined ? (
+                <Link to="/basket">
+                  <div className="course__bottom__cart">Go to Cart</div>
+                </Link>
+              ) : (
+                <div
+                  onClick={() => {
+                    dispatch(addBasketItemAsync({ courseId: course.id }));
+                  }}
+                  className="course__bottom__cart"
+                >
+                  Add to cart
+                </div>
+              )}
           </div>
         </Card>
       </Col>
