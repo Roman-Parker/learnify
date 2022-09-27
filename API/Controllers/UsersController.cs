@@ -1,15 +1,17 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using System.Text.Json;
 using API.Dto;
-using Entity;
 using API.ErrorResponse;
 using AutoMapper;
+using Entity;
 using Infrastructure;
 using Infrastructure.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authorization;
+using System;
 
 namespace API.Controllers
 {
@@ -40,7 +42,7 @@ namespace API.Controllers
 
             var userBasket = await ExtractBasket(user.UserName);
             var basket = await ExtractBasket(Request.Cookies["clientId"]);
-            var courses = _context.UserCourses.AsQeryeable();
+             var courses = _context.UserCourses.AsQueryable();
 
             if (basket != null)
             {
@@ -55,7 +57,7 @@ namespace API.Controllers
                 Email = user.Email,
                 Token = await _tokenService.GenerateToken(user),
                 Basket = basket != null ? _mapper.Map<Basket, BasketDto>(basket) : _mapper.Map<Basket, BasketDto>(userBasket),
-                Courses =   courses.Where(x => x.UserId == user.id).Select(u => u.Course).ToList();
+                Courses = courses.Where(x => x.UserId == user.Id).Select(u => u.Course).ToList()
             };
         }
 
@@ -108,27 +110,29 @@ namespace API.Controllers
             if (result) return Ok();
 
               return BadRequest(new ApiResponse(400, "Problem adding Course"));
+
          }
 
         [Authorize]
         [HttpGet("currentUser")]
-
-        public async Task<ActionResult<UserDto>>GetCurrentUser(){
+        public async Task<ActionResult<UserDto>> GetCurrentUser()
+        {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
 
             var basket = await ExtractBasket(User.Identity.Name);
 
-            var courses = _context.UserCourses.AsQeryeable();
+            var courses = _context.UserCourses.AsQueryable();
 
-             return new UserDto
+            return new UserDto
             {
                 Email = user.Email,
                 Token = await _tokenService.GenerateToken(user),
-                Basket =_mapper.Map<Basket, BasketDto>(basket), 
-                Courses =   courses.Where(x => x.UserId == user.id).Select(u => u.Course).ToList();
+                Basket =  _mapper.Map<Basket, BasketDto>(basket),
+                Courses = courses.Where(x => x.UserId == user.Id).Select(u => u.Course).ToList()
             };
         }
-        
+
+
         private async Task<Basket> ExtractBasket(string clientId)
         {
             if (string.IsNullOrEmpty(clientId))
@@ -140,9 +144,7 @@ namespace API.Controllers
                         .Include(b => b.Items)
                         .ThenInclude(i => i.Course)
                         .OrderBy(i => i.Id)
-                        .FirstOrDefaultAsync(x => x.ClientId == clientId);
-
-        }
+                        .FirstOrDefaultAsync(x => x.ClientId == clientId);        }
 
     }
 }
