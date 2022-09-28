@@ -2,11 +2,12 @@ import { Basket } from "./basket";
 import { Course } from "./course";
 
 export interface User {
-    email: string;
-    token: string;
-    basket?: Basket;
-    courses?: Course[];
-  }
+  email: string;
+  token: string;
+  basket?: Basket;
+  courses?: Course[];
+  roles?: string[];
+}
   
   export interface Login {
     email: string;
