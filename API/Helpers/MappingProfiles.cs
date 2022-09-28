@@ -9,6 +9,9 @@ namespace API.Helpers
     {
         public MappingProfiles()
         {
+            CreateMap<Category, CategoryDto>();
+
+            CreateMap<Category, CategoriesDto>();
             CreateMap<Course, CourseDto>()
             .ForMember(c => c.Category, o => o.MapFrom(s => s.Category.Name));
             CreateMap<Learning, LearningDto>();
