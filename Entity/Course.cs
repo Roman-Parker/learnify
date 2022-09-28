@@ -15,14 +15,17 @@ namespace Entity
 
         public int Students { get; set; }
 
-         public DateTime LastUpdated { get; set; } = DateTime.Now;
+        public DateTime LastUpdated { get; set; } = DateTime.Now;
 
         public string Description { get; set; }
+
         public float Price { get; set; }
 
         public string Instructor { get; set; }
 
-        public string Image { get; set; }
+        public bool Published { get; set; } = false;
+
+        public string Image { get; set; } = "https://learnify-assets.s3.amazonaws.com/Images/learnify.png";
 
         public decimal Rating { get; set; }
 
@@ -35,8 +38,8 @@ namespace Entity
 
         public Category Category { get; set; }
 
-         public ICollection<UserCourse> UserCourses { get; set; }
+        public ICollection<UserCourse> UserCourses { get; set; }
 
-         public ICollection<Section> Sections { get; set; }
+        public ICollection<Section> Sections { get; set; }
     }
-} 
+}
