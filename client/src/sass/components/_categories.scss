@@ -1,5 +1,5 @@
 .categories {
-    background-color: white;
+    background-color: #e8630a;
     height: 50px;
     display: flex;
     width: 100%;
@@ -17,7 +17,7 @@
     }
   
     &__name {
-      color: black;
+      color: white;
       font-weight: bold;
   
       &:hover {
