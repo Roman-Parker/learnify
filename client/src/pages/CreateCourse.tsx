@@ -140,7 +140,7 @@ const CreateCourse = () => {
             onChange={(value) =>
               setValues({
                 ...values,
-                price: value,
+                price: value ?? 0,
               })
             }
           />
