@@ -33,10 +33,10 @@ make install
 
 Configure the API by adding a connection string and any required secrets (e.g. Stripe keys, JWT signing key) via `API/appsettings.Development.json` or `dotnet user-secrets`.
 
-Apply database migrations from the `API` directory:
+Apply database migrations:
 
 ```
-dotnet ef database update -p ../Infrastructure -s .
+make migrate
 ```
 
 ## Running
@@ -58,6 +58,7 @@ make build
 ## Other commands
 
 ```
+make migrate       # apply EF Core database migrations
 make clean         # remove build artifacts
 make help          # list all available targets
 ```
