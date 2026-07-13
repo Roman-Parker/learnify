@@ -25,8 +25,8 @@ const CategoryPage = () => {
       </div>
       <Row gutter={[24, 32]}>
         {data?.courses?.length ? (
-          data?.courses!.map((course: Course, index: number) => {
-            return <ShowCourses key={index} course={course} />;
+          data?.courses!.map((course: Course) => {
+            return <ShowCourses key={course.id} course={course} />;
           })
         ) : (
           <h1>No Courses found in this Category!</h1>
