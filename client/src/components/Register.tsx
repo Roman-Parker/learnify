@@ -51,13 +51,13 @@ const RegisterComponent = ({ toggleRegister }: Props) => {
       }
       resetForm();
     } catch (err: any) {
-     if(err.error) {
+      if (Array.isArray(err.error)) {
         for (const val of err.error) {
           notification.error({
             message: val,
           });
         }
-     }
+      }
       resetForm();
     }
   };
