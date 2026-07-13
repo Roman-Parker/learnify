@@ -48,7 +48,7 @@ make run-api       # API only
 make run-client    # client only
 ```
 
-The API also exposes Swagger UI for exploring the available endpoints.
+The API also exposes Swagger UI for exploring the available endpoints, at [https://localhost:5001/swagger](https://localhost:5001/swagger).
 
 ## Building
 
