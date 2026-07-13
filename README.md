@@ -4,7 +4,7 @@ This project is a platform for online courses. The user can browse and purchase 
 
 ## Tech stack
 
-**API** ASP.NET Core 6 (`API`), Entity Framework Core, SQL Server, ASP.NET Identity for auth (JWT via `TokenService`), Stripe for payments, AutoMapper, Swashbuckle (Swagger).
+**API** ASP.NET Core 6 (`API`), Entity Framework Core, SQLite, ASP.NET Identity for auth (JWT via `TokenService`), Stripe for payments, AutoMapper, Swashbuckle (Swagger).
 
 **Client** React 18 + TypeScript, Redux Toolkit, React Router, Ant Design, Axios, Stripe.js.
 
@@ -21,7 +21,8 @@ client/           React frontend
 
 - .NET SDK 6.0.428 (see `global.json`)
 - Node.js and npm
-- SQL Server (or update the connection string to your preferred provider)
+- `dotnet-ef` CLI tool: `dotnet tool install --global dotnet-ef --version 5.0.17`
+- SQLite is used by default (`API/appsettings.Development.json`)
 
 ## Setup
 
